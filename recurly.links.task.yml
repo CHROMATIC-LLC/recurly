@@ -8,3 +8,6 @@ recurly.subscription_plans_overview:
   title: 'Subscription plans'
   weight: -5
   base_route: recurly.settings_form
+recurly.entities:
+  class: '\Drupal\recurly\Plugin\Menu\RecurlySubscriptionTab'
+  deriver: '\Drupal\recurly\Plugin\Derivative\RecurlyDynamicLocalTasks'
