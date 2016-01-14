@@ -638,7 +638,7 @@ function recurly_recurly_url_info($operation, $context) {
 
   switch ($operation) {
     case 'select_plan':
-      return Url::fromRoute('recurly_signup', ['entity' => $context['entity']->id()]);
+      return Url::fromRoute("entity.$recurly_entity_type.recurly_signup", [$recurly_entity_type => $context['entity']->id()]);
 
     case 'change_plan':
       return Url::fromRoute('recurly.subscription_plan_change', [

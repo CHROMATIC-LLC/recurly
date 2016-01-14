@@ -47,6 +47,7 @@ class RecurlyJsRoutes {
           'operation' => 'signup',
         ],
         [
+          '_permission' => 'manage recurly subscription',
           '_entity_access' => 'entity.update',
           '_access_check_recurly_user' => 'TRUE',
           '_access_check_recurly_default' => 'TRUE',
