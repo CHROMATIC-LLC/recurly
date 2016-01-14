@@ -26,5 +26,5 @@ recurly.subscription_plans_overview:
   requirements:
     _permission: 'administer recurly'
 # Handles dynamic routes.
-#route_callbacks:
-#  - '\Drupal\recurly\Routing\RecurlySubscriptionRoutes::routes'
+route_callbacks:
+  - '\Drupal\recurly\Routing\RecurlySubscriptionRoutes::routes'

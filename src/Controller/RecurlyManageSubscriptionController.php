@@ -21,7 +21,7 @@ class RecurlyManageSubscriptionController extends ControllerBase {
   function subscriptionRedirect($account_code) {
     $account = recurly_account_load(['account_code' => $account_code], TRUE);
     if ($account) {
-      return $this->redirect('recurly.subscription_list', ['entity' => $account->entity_id]);
+      return $this->redirect('recurly_signup', ['entity' => $account->entity_id]);
     }
     else {
       throw new NotFoundHttpException();

@@ -150,7 +150,7 @@ class RecurlySubscriptionListController extends ControllerBase {
 
     // If the user doesn't have any active subscriptions, redirect to signup.
     if (count(\Drupal\Core\Render\Element::children($subscriptions['subscriptions'])) === 0) {
-      return $this->redirect('recurly.subscription_signup', ['entity' => $entity->id()]);
+      return $this->redirect('recurly_signup', ['entity' => $entity->id()]);
     }
 
     return $subscriptions;

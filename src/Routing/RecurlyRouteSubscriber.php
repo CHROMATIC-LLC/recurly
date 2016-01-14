@@ -42,7 +42,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
     $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
     $entity_manager_definitions = $this->entityManager->getDefinitions();
     $entity_type = $entity_manager_definitions[$entity_type_id];
-    if ($entity_type->hasLinkTemplate('recurly-subscriptionlist') || $entity_type->hasLinkTemplate('recurly-change') || $entity_type->hasLinkTemplate('recurly-billing')) {
+    if ($entity_type->hasLinkTemplate('recurly-subscriptionlist') || $entity_type->hasLinkTemplate('recurly-signup') || $entity_type->hasLinkTemplate('recurly-change') || $entity_type->hasLinkTemplate('recurly-billing')) {
 
       $options = array(
         '_admin_route' => TRUE,
@@ -88,6 +88,23 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
         );
 
         $collection->add("entity.$entity_type_id.recurly_change", $route);
+      }
+
+      if ($recurly_signup = $entity_type->getLinkTemplate('recurly-signup')) {
+        $route = new Route(
+          $recurly_signup,
+          array(
+            // @todo. Need a correct controller method.
+            '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionSelectPlanController::planSelect',
+            '_title' => \Drupal::config('recurly.settings')->get('recurly_subscription_max') == 1 ? 'Signup' : 'Add plan',
+            'operation' => 'select_plan',
+          ),
+          // @todo. What is the correct permission?
+          array('_permission' => 'manage recurly subscription'),
+          $options
+        );
+
+        $collection->add("entity.$entity_type_id.recurly_signup", $route);
       }
 
       if ($recurly_billing = $entity_type->getLinkTemplate('recurly-billing')) {

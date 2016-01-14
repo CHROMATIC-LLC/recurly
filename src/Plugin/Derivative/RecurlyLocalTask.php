@@ -71,7 +71,7 @@ class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface 
 
     if ($has_canonical_path) {
       $this->derivatives["$entity_type_id.recurly_signup_tab"] = array(
-        'route_name' => "entity.$entity_type_id.recurly_subscriptionlist",
+        'route_name' => "entity.$entity_type_id.recurly_signup",
         'title' => $this->t('Signup'),
         'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
         'weight' => 50,
