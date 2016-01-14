@@ -14,6 +14,18 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 
 /**
+ * Constants for "state" strings.
+ */
+const RECURLY_STATE_ACTIVE = 'active';
+const RECURLY_STATE_CANCELED = 'canceled';
+const RECURLY_STATE_EXPIRED = 'expired';
+const RECURLY_STATE_FUTURE = 'future';
+const RECURLY_STATE_PENDING_SUBSCRIPTION = 'pending_subscription';
+const RECURLY_STATE_IN_TRIAL = 'in_trial';
+const RECURLY_STATE_LIVE = 'live';
+const RECURLY_STATE_PAST_DUE = 'past_due';
+
+/**
  * Implements hook_help().
  */
 function recurly_help($route_name, RouteMatchInterface $route_match) {
@@ -737,28 +749,28 @@ function recurly_format_date($date) {
  */
 function recurly_format_state($state) {
   switch ($state) {
-    case 'active':
+    case RECURLY_STATE_ACTIVE:
       return t('Active');
 
-    case 'canceled':
+    case RECURLY_STATE_CANCELED:
       return t('Canceled (will not renew)');
 
-    case 'expired':
+    case RECURLY_STATE_EXPIRED:
       return t('Expired');
 
-    case 'future':
+    case RECURLY_STATE_FUTURE:
       return t('Future Activation');
 
-    case 'pending_subscription':
+    case RECURLY_STATE_PENDING_SUBSCRIPTION:
       return t('Switching to new plan');
 
-    case 'in_trial':
+    case RECURLY_STATE_IN_TRIAL:
       return t('Trial');
 
-    case 'live':
+    case RECURLY_STATE_LIVE:
       return t('Live');
 
-    case 'past_due':
+    case RECURLY_STATE_PAST_DUE:
       return t('Past Due');
   }
 }
