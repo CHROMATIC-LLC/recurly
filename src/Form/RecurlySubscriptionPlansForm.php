@@ -38,6 +38,7 @@ class RecurlySubscriptionPlansForm extends FormBase {
       return $this->t('No plans could be retrieved from Recurly. Recurly reported the following error: "@error"', ['@error' => $e->getMessage()]);
     }
     $form['weights']['#tree'] = TRUE;
+    $recurly_format_manager = \Drupal::service('recurly.format_manager');
 
     $plan_options = [];
     $count = 0;
@@ -57,13 +58,13 @@ class RecurlySubscriptionPlansForm extends FormBase {
       foreach ($unit_amounts as $unit_amount) {
         $form['#plans'][$plan->plan_code]['unit_amounts'][$unit_amount->currencyCode] = $this->t('@unit_price every @interval_length @interval_unit',
           [
-            '@unit_price' => recurly_format_currency($unit_amount->amount_in_cents, $unit_amount->currencyCode),
+            '@unit_price' => $recurly_format_manager->formatCurrency($unit_amount->amount_in_cents, $unit_amount->currencyCode),
             '@interval_length' => $plan->plan_interval_length,
             '@interval_unit' => $plan->plan_interval_unit,
           ]);
       }
       foreach ($setup_fees as $setup_fee) {
-        $form['#plans'][$plan->plan_code]['setup_amounts'][$unit_amount->currencyCode] = recurly_format_currency($setup_fee->amount_in_cents, $setup_fee->currencyCode);
+        $form['#plans'][$plan->plan_code]['setup_amounts'][$unit_amount->currencyCode] = $recurly_format_manager->formatCurrency($setup_fee->amount_in_cents, $setup_fee->currencyCode);
       }
       $form['weights'][$plan->plan_code] = [
         '#type' => 'hidden',

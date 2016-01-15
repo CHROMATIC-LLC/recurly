@@ -48,10 +48,11 @@ class RecurlySubscriptionReactivateController extends ControllerBase {
     }
 
     try {
+      $recurly_format_manager = \Drupal::service('recurly.format_manager');
       $subscription->reactivate();
       drupal_set_message($this->t('Plan @plan reactivated! Normal billing will resume on @date.', [
         '@plan' => $subscription->plan->name,
-        '@date' => recurly_format_date($subscription->current_period_ends_at),
+        '@date' => $recurly_format_manager->formatDate($subscription->current_period_ends_at),
       ]));
     }
     catch (Recurly_Error $e) {
