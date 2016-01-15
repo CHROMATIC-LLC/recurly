@@ -641,8 +641,8 @@ function recurly_recurly_url_info($operation, $context) {
       return Url::fromRoute("entity.$recurly_entity_type.recurly_signup", [$recurly_entity_type => $context['entity']->id()]);
 
     case 'change_plan':
-      return Url::fromRoute('recurly.subscription_plan_change', [
-        'entity' => $context['entity']->id(),
+      return Url::fromRoute("entity.$recurly_entity_type.recurly_planchange", [
+        $recurly_entity_type => $context['entity']->id(),
         'subscription_id' => $context['subscription']->uuid,
         'new_plan_code' => isset($context['plan_code']) ? $context['plan_code'] : NULL,
       ]);
@@ -1120,5 +1120,6 @@ function recurly_entity_type_alter(array &$entity_types) {
     $entity_type->setLinkTemplate('recurly-subscriptionlist', $entity_type->getLinkTemplate('canonical') . '/subscription');
     $entity_type->setLinkTemplate('recurly-signup', $entity_type->getLinkTemplate('canonical') . '/subscription/signup');
     $entity_type->setLinkTemplate('recurly-change', $entity_type->getLinkTemplate('canonical') . '/subscription/change');
+    $entity_type->setLinkTemplate('recurly-planchange', $entity_type->getLinkTemplate('canonical') . '/subscription/id/{subscription_id}/change/{new_plan_code}');
   }
 }

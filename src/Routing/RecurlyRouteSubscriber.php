@@ -78,16 +78,41 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
         $route = new Route(
           $recurly_change,
           array(
-            // @todo. Need a correct controller method.
-            '_controller' => '\Drupal\recurly\Controller\RecurlyController::entityLoad',
-            '_title' => 'Subscription plan',
+            '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionSelectPlanController::planSelect',
+            '_title' => 'Change plan',
+            'subscription_id' => 'latest',
+            'operation' => 'change_plan_latest',
           ),
           // @todo. What is the correct permission?
-          array('_permission' => 'manage recurly subscription'),
+          array(
+           // '_entity_access' => 'entity.update',
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
           $options
         );
 
         $collection->add("entity.$entity_type_id.recurly_change", $route);
+      }
+
+      if ($recurly_planchange = $entity_type->getLinkTemplate('recurly-planchange')) {
+        $route = new Route(
+          $recurly_planchange,
+          array(
+            '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionChangeController::changePlan',
+            '_title' => 'Change subscription',
+            'operation' => 'change_plan',
+          ),
+          // @todo. What is the correct permission?
+          array(
+           // '_entity_access' => 'entity.update',
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
+          $options
+        );
+
+        $collection->add("entity.$entity_type_id.recurly_planchange", $route);
       }
 
       if ($recurly_signup = $entity_type->getLinkTemplate('recurly-signup')) {
