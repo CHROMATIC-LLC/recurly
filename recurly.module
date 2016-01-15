@@ -13,17 +13,6 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 
-/**
- * Constants for "state" strings.
- */
-const RECURLY_STATE_ACTIVE = 'active';
-const RECURLY_STATE_CANCELED = 'canceled';
-const RECURLY_STATE_EXPIRED = 'expired';
-const RECURLY_STATE_FUTURE = 'future';
-const RECURLY_STATE_PENDING_SUBSCRIPTION = 'pending_subscription';
-const RECURLY_STATE_IN_TRIAL = 'in_trial';
-const RECURLY_STATE_LIVE = 'live';
-const RECURLY_STATE_PAST_DUE = 'past_due';
 
 /**
  * Implements hook_help().
