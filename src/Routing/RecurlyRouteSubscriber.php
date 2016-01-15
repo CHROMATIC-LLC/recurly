@@ -106,22 +106,6 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
 
         $collection->add("entity.$entity_type_id.recurly_signup", $route);
       }
-
-      if ($recurly_billing = $entity_type->getLinkTemplate('recurly-billing')) {
-        $route = new Route(
-          $recurly_billing,
-          array(
-            // @todo. Need a correct controller method.
-            '_controller' => '\Drupal\recurly\Controller\RecurlyController::entityLoad',
-            '_title' => 'Subscription Billing',
-          ),
-          // @todo. What is the correct permission?
-          array('_permission' => 'manage recurly subscription'),
-          $options
-        );
-
-        $collection->add("entity.$entity_type_id.recurly_billing", $route);
-      }
     }
   }
 

@@ -1120,6 +1120,5 @@ function recurly_entity_type_alter(array &$entity_types) {
     $entity_type->setLinkTemplate('recurly-subscriptionlist', $entity_type->getLinkTemplate('canonical') . '/subscription');
     $entity_type->setLinkTemplate('recurly-signup', $entity_type->getLinkTemplate('canonical') . '/subscription/signup');
     $entity_type->setLinkTemplate('recurly-change', $entity_type->getLinkTemplate('canonical') . '/subscription/change');
-    $entity_type->setLinkTemplate('recurly-billing', $entity_type->getLinkTemplate('canonical') . '/subscription/billing');
   }
 }

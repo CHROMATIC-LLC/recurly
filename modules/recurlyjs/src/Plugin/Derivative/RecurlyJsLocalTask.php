@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\recurly\Plugin\Derivative\RecurlyLocalTask.
+ * Contains \Drupal\recurlyjs\Plugin\Derivative\RecurlyLocalTask.
  */
 
-namespace Drupal\recurly\Plugin\Derivative;
+namespace Drupal\recurlyjs\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Entity\EntityManagerInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides local task definitions for all entity bundles.
  */
-class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface {
+class RecurlyJsLocalTask extends DeriverBase implements ContainerDeriverInterface {
 
   use StringTranslationTrait;
 
@@ -61,29 +61,11 @@ class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface 
     $entity_type = $entity_manager_definitions[$entity_type_id];
     $has_canonical_path = $entity_type->hasLinkTemplate('recurly-subscriptionlist');
     if ($has_canonical_path) {
-      $this->derivatives["$entity_type_id.recurly_tab"] = array(
-        'route_name' => "entity.$entity_type_id.recurly_subscriptionlist",
-        'title' => $this->t('Subscription'),
-        'base_route' => "entity.$entity_type_id.canonical",
+      $this->derivatives["$entity_type_id.recurlyjs_billing_tab"] = array(
+        'route_name' => "entity.$entity_type_id.recurlyjs_billing",
+        'title' => $this->t('Update billing information'),
+        'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
         'weight' => 100,
-      );
-      $this->derivatives["$entity_type_id.recurly_signup_tab"] = array(
-        'route_name' => "entity.$entity_type_id.recurly_signup",
-        'title' => $this->t('Signup'),
-        'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
-        'weight' => 50,
-      );
-//      $this->derivatives["$entity_type_id.recurly_billing_tab"] = array(
-//        'route_name' => "entity.$entity_type_id.recurly_billing",
-//        'title' => $this->t('Update billing information'),
-//        'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
-//        'weight' => 100,
-//      );
-      $this->derivatives["$entity_type_id.recurly_change_tab"] = array(
-        'route_name' => "entity.$entity_type_id.recurly_change",
-        'weight' => 200,
-        'title' => $this->t('Change plan'),
-        'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
       );
     }
 
