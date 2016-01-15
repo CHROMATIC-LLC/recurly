@@ -1119,9 +1119,7 @@ function recurly_entity_type_alter(array &$entity_types) {
   if ($entity_type->hasViewBuilderClass() && $entity_type->hasLinkTemplate('canonical')) {
     $entity_type->setLinkTemplate('recurly-subscriptionlist', $entity_type->getLinkTemplate('canonical') . '/subscription');
     $entity_type->setLinkTemplate('recurly-signup', $entity_type->getLinkTemplate('canonical') . '/subscription/signup');
-  }
-  if ($entity_type->hasViewBuilderClass() && $entity_type->hasLinkTemplate('edit-form')) {
-    $entity_type->setLinkTemplate('recurly-change', $entity_type->getLinkTemplate('edit-form') . '/subscription/change');
-    $entity_type->setLinkTemplate('recurly-billing', $entity_type->getLinkTemplate('edit-form') . '/subscription/billing');
+    $entity_type->setLinkTemplate('recurly-change', $entity_type->getLinkTemplate('canonical') . '/subscription/change');
+    $entity_type->setLinkTemplate('recurly-billing', $entity_type->getLinkTemplate('canonical') . '/subscription/billing');
   }
 }

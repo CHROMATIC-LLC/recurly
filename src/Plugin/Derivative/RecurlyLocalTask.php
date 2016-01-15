@@ -22,7 +22,7 @@ class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface 
   use StringTranslationTrait;
 
   /**
-   * The entity manager
+   * The entity manager.
    *
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
@@ -59,33 +59,26 @@ class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface 
     $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
     $entity_manager_definitions = $this->entityManager->getDefinitions();
     $entity_type = $entity_manager_definitions[$entity_type_id];
-    $has_edit_path = $entity_type->hasLinkTemplate('recurly-change');
     $has_canonical_path = $entity_type->hasLinkTemplate('recurly-subscriptionlist');
-
-    $this->derivatives["$entity_type_id.recurly_tab"] = array(
-      'route_name' => "entity.$entity_type_id." . ($has_edit_path ? 'recurly_subscriptionlist' : 'recurly_subscriptionlist'),
-      'title' => $this->t('Subscription'),
-      'base_route' => "entity.$entity_type_id." . ($has_canonical_path ? "canonical" : "edit_form"),
-      'weight' => 100,
-    );
-
     if ($has_canonical_path) {
+      $this->derivatives["$entity_type_id.recurly_tab"] = array(
+        'route_name' => "entity.$entity_type_id.recurly_subscriptionlist",
+        'title' => $this->t('Subscription'),
+        'base_route' => "entity.$entity_type_id.canonical",
+        'weight' => 100,
+      );
       $this->derivatives["$entity_type_id.recurly_signup_tab"] = array(
         'route_name' => "entity.$entity_type_id.recurly_signup",
         'title' => $this->t('Signup'),
         'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
         'weight' => 50,
       );
-
       $this->derivatives["$entity_type_id.recurly_billing_tab"] = array(
         'route_name' => "entity.$entity_type_id.recurly_billing",
         'title' => $this->t('Update billing information'),
         'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
         'weight' => 100,
       );
-    }
-
-    if ($has_edit_path) {
       $this->derivatives["$entity_type_id.recurly_change_tab"] = array(
         'route_name' => "entity.$entity_type_id.recurly_change",
         'weight' => 200,
@@ -99,4 +92,5 @@ class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface 
     }
     return $this->derivatives;
   }
+
 }
