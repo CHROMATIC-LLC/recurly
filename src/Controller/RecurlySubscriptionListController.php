@@ -50,6 +50,7 @@ class RecurlySubscriptionListController extends ControllerBase {
     $subscription_type = \Drupal::config('recurly.settings')->get('recurly_subscription_display');
     $subscription_list = \Recurly_SubscriptionList::getForAccount($account->account_code, ['per_page' => $per_page]);
     $recurly_pager_manager = \Drupal::service('recurly.pager_manager');
+    $recurly_format_manager = \Drupal::service('recurly.format_manager');
     $page_subscriptions = $recurly_pager_manager->pagerResults($subscription_list, $per_page);
 
     $subscriptions['subscriptions']['#attached']['library'][] = 'recurly/recurly.default';
@@ -92,7 +93,7 @@ class RecurlySubscriptionListController extends ControllerBase {
           'add_on_code' => $add_on->add_on_code,
           'name' => SafeMarkup::checkPlain($full_add_on->name),
           'quantity' => SafeMarkup::checkPlain($add_on->quantity),
-          'cost' => recurly_format_currency($add_on->unit_amount_in_cents, $subscription->currency),
+          'cost' => $recurly_format_manager->formatCurrency($add_on->unit_amount_in_cents, $subscription->currency),
         ];
         $total += $add_on->unit_amount_in_cents * $add_on->quantity;
       }
@@ -112,16 +113,16 @@ class RecurlySubscriptionListController extends ControllerBase {
         '#plan_code' => $plan->plan_code,
         '#plan_name' => SafeMarkup::checkPlain($plan->name),
         '#state_array' => $states,
-        '#state_status' => recurly_format_state(reset($states)),
+        '#state_status' => $recurly_format_manager->formatState(reset($states)),
         '#period_end_header' => $this->periodEndHeaderString($states),
-        '#cost' => recurly_format_currency($subscription->unit_amount_in_cents, $subscription->currency),
+        '#cost' => $recurly_format_manager->formatCurrency($subscription->unit_amount_in_cents, $subscription->currency),
         '#quantity' => $subscription->quantity,
         '#add_ons' => $add_ons,
-        '#start_date' => recurly_format_date($subscription->activated_at),
-        '#end_date' => isset($subscription->expires_at) ? recurly_format_date($subscription->expires_at) : NULL,
-        '#current_period_start' => recurly_format_date($subscription->current_period_started_at),
-        '#current_period_ends_at' => recurly_format_date($subscription->current_period_ends_at),
-        '#total' => recurly_format_currency($total, $subscription->currency),
+        '#start_date' => $recurly_format_manager->formatDate($subscription->activated_at),
+        '#end_date' => isset($subscription->expires_at) ? $recurly_format_manager->formatDate($subscription->expires_at) : NULL,
+        '#current_period_start' => $recurly_format_manager->formatDate($subscription->current_period_started_at),
+        '#current_period_ends_at' => $recurly_format_manager->formatDate($subscription->current_period_ends_at),
+        '#total' => $recurly_format_manager->formatCurrency($total, $subscription->currency),
         '#subscription_links' => [
           '#theme' => 'links',
           '#links' => $links,
@@ -228,7 +229,7 @@ class RecurlySubscriptionListController extends ControllerBase {
           return $this->t('This plan has expired.');
         }
       case 'pending_subscription':
-        return $this->t('This plan will be changed to @plan on @date.', ['@plan' => $context['subscription']->pending_subscription->plan->name, '@date' => recurly_format_date($context['subscription']->current_period_ends_at)]);
+        return $this->t('This plan will be changed to @plan on @date.', ['@plan' => $context['subscription']->pending_subscription->plan->name, '@date' => $recurly_format_manager->formatDate($context['subscription']->current_period_ends_at)]);
 
       case 'future':
         return $this->t('This plan has not started yet. Please contact support if you have any questions.');
