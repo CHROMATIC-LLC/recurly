@@ -63,7 +63,6 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           ),
           array(
             '_permission' => 'manage recurly subscription',
-            // Is this line needed.
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
             '_access_check_recurly_list' => 'TRUE',
@@ -83,7 +82,6 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
             'subscription_id' => 'latest',
             'operation' => 'change_plan_latest',
           ),
-          // @todo. What is the correct permission?
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
@@ -103,7 +101,6 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
             '_title' => 'Change subscription',
             'operation' => 'change_plan',
           ),
-          // @todo. What is the correct permission?
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
@@ -123,8 +120,11 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
             '_title' => \Drupal::config('recurly.settings')->get('recurly_subscription_max') == 1 ? 'Signup' : 'Add plan',
             'operation' => 'select_plan',
           ),
-          // @todo. What is the correct permission?
-          array('_permission' => 'manage recurly subscription'),
+          array(
+            '_entity_access' => "$entity_type_id.update",
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
           $options
         );
 
@@ -204,6 +204,62 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
         );
 
         $collection->add("entity.$entity_type_id.recurly_cancel", $route);
+      }
+
+      // Invoice routes.
+      if ($recurly_invoices = $entity_type->getLinkTemplate('recurly-invoices')) {
+        $route = new Route(
+          $recurly_invoices,
+          array(
+            '_controller' => '\Drupal\recurly\Controller\RecurlyInvoicesController::invoicesList',
+            '_title' => 'Invoices',
+            'operation' => 'invoices',
+          ),
+          array(
+            '_entity_access' => "$entity_type_id.update",
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
+          $options
+        );
+
+        $collection->add("entity.$entity_type_id.recurly_invoices", $route);
+      }
+      if ($recurly_invoice = $entity_type->getLinkTemplate('recurly-invoice')) {
+        $route = new Route(
+          $recurly_invoice,
+          array(
+            '_controller' => '\Drupal\recurly\Controller\RecurlyInvoicesController::getInvoice',
+            '_title' => 'Invoice',
+            'operation' => 'invoices',
+          ),
+          array(
+            '_entity_access' => "$entity_type_id.update",
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
+          $options
+        );
+
+        $collection->add("entity.$entity_type_id.recurly_invoice", $route);
+      }
+      if ($recurly_invoice_pdf = $entity_type->getLinkTemplate('recurly-invoicepdf')) {
+        $route = new Route(
+          $recurly_invoice_pdf,
+          array(
+            '_controller' => '\Drupal\recurly\Controller\RecurlyInvoicesController::getInvoicePdf',
+            '_title' => 'Invoice PDF',
+            'operation' => 'invoices',
+          ),
+          array(
+            '_entity_access' => "$entity_type_id.update",
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
+          $options
+        );
+
+        $collection->add("entity.$entity_type_id.recurly_invoicepdf", $route);
       }
     }
   }

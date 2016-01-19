@@ -1026,8 +1026,8 @@ function template_preprocess_recurly_invoice_list(&$variables) {
     }
 
     $row = [];
-    $row[] = Link::createFromRoute($invoice->invoice_number . $status, 'recurly.subscription_invoice', [
-      'entity' => $entity->id(),
+    $row[] = Link::createFromRoute($invoice->invoice_number . $status, "entity.$entity_type.recurly_invoice", [
+      $entity_type => $entity->id(),
       'invoice_number' => $invoice->invoice_number,
     ]);
 
@@ -1052,6 +1052,7 @@ function template_preprocess_recurly_invoice_list(&$variables) {
  * Implements hook_preprocess_recurly_invoice().
  */
 function template_preprocess_recurly_invoice(&$variables) {
+  $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
   $invoice = $variables['invoice'];
   $invoice_account = $variables['invoice_account'];
   $entity = $variables['entity'];
@@ -1061,8 +1062,8 @@ function template_preprocess_recurly_invoice(&$variables) {
   $paid_amount = $invoice->state === 'collected' ? $invoice->total_in_cents : 0;
   $variables += [
     'invoice_date' => recurly_format_date($invoice->created_at),
-    'pdf_link' => Link::createFromRoute(t('View PDF'), 'recurly.subscription_invoice_pdf', [
-      'entity' => $entity->id(),
+    'pdf_link' => Link::createFromRoute(t('View PDF'), "entity.$entity_type_id.recurly_invoicepdf", [
+      $entity_type_id => $entity->id(),
       'invoice_number' => $invoice->invoice_number,
     ]),
     'subtotal' => recurly_format_currency($invoice->subtotal_in_cents, $invoice->currency),
@@ -1125,5 +1126,8 @@ function recurly_entity_type_alter(array &$entity_types) {
     $entity_type->setLinkTemplate('recurly-cancel', $entity_type->getLinkTemplate('canonical') . '/subscription/id/{subscription_id}/cancel');
     $entity_type->setLinkTemplate('recurly-reactivatelatest', $entity_type->getLinkTemplate('canonical') . '/subscription/reactivate');
     $entity_type->setLinkTemplate('recurly-reactivate', $entity_type->getLinkTemplate('canonical') . '/subscription/id/{subscription_id}/cancel');
+    $entity_type->setLinkTemplate('recurly-invoices', $entity_type->getLinkTemplate('canonical') . '/subscription/invoices');
+    $entity_type->setLinkTemplate('recurly-invoice', $entity_type->getLinkTemplate('canonical') . '/subscription/invoices/{invoice_number}');
+    $entity_type->setLinkTemplate('recurly-invoicepdf', $entity_type->getLinkTemplate('canonical') . '/subscription/invoices/{invoice_number}/pdf');
   }
 }
