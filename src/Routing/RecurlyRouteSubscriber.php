@@ -64,7 +64,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_permission' => 'manage recurly subscription',
             // Is this line needed.
-           // '_entity_access' => 'entity.update',.
+            '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
             '_access_check_recurly_list' => 'TRUE',
           ),
@@ -85,7 +85,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           ),
           // @todo. What is the correct permission?
           array(
-           // '_entity_access' => 'entity.update',
+            '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
             '_access_check_recurly_default' => 'TRUE',
           ),
@@ -105,7 +105,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           ),
           // @todo. What is the correct permission?
           array(
-           // '_entity_access' => 'entity.update',
+            '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
             '_access_check_recurly_default' => 'TRUE',
           ),
@@ -119,7 +119,6 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
         $route = new Route(
           $recurly_signup,
           array(
-            // @todo. Need a correct controller method.
             '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionSelectPlanController::planSelect',
             '_title' => \Drupal::config('recurly.settings')->get('recurly_subscription_max') == 1 ? 'Signup' : 'Add plan',
             'operation' => 'select_plan',
@@ -130,6 +129,81 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
         );
 
         $collection->add("entity.$entity_type_id.recurly_signup", $route);
+      }
+      if ($recurly_cancel_latest = $entity_type->getLinkTemplate('recurly-cancellatest')) {
+        $route = new Route(
+          $recurly_cancel_latest,
+          array(
+            '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionCancelController::subscriptionCancel',
+            '_title' => 'Cancel subscription',
+            'subscription_id' => 'latest',
+            'operation' => 'cancel_latest',
+          ),
+          array(
+            '_entity_access' => "$entity_type_id.update",
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
+          $options
+        );
+
+        $collection->add("entity.$entity_type_id.recurly_cancellatest", $route);
+      }
+      if ($recurly_cancel = $entity_type->getLinkTemplate('recurly-cancel')) {
+        $route = new Route(
+          $recurly_cancel,
+          array(
+            '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionCancelController::subscriptionCancel',
+            '_title' => 'Cancel subscription',
+            'subscription_id' => 'latest',
+            'operation' => 'cancel',
+          ),
+          array(
+            '_entity_access' => "$entity_type_id.update",
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
+          $options
+        );
+
+        $collection->add("entity.$entity_type_id.recurly_cancel", $route);
+      }
+
+      if ($recurly_reactivate_latest = $entity_type->getLinkTemplate('recurly-reactivatelatest')) {
+        $route = new Route(
+          $recurly_reactivate_latest,
+          array(
+            '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionReactivateController::reactivateSubscription',
+            '_title' => 'Reactivate',
+            'operation' => 'reactivate_latest',
+          ),
+          array(
+            '_entity_access' => "$entity_type_id.update",
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
+          $options
+        );
+
+        $collection->add("entity.$entity_type_id.recurly_reactivatelatest", $route);
+      }
+      if ($recurly_reactivate = $entity_type->getLinkTemplate('recurly-reactivate')) {
+        $route = new Route(
+          $recurly_reactivate,
+          array(
+            '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionReactivateController::reactivateSubscription',
+            '_title' => 'Reactivate',
+            'operation' => 'reactivate',
+          ),
+          array(
+            '_entity_access' => "$entity_type_id.update",
+            '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_default' => 'TRUE',
+          ),
+          $options
+        );
+
+        $collection->add("entity.$entity_type_id.recurly_cancel", $route);
       }
     }
   }

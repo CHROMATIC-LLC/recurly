@@ -73,17 +73,23 @@ class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface 
         'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
         'weight' => 50,
       );
-//      $this->derivatives["$entity_type_id.recurly_billing_tab"] = array(
-//        'route_name' => "entity.$entity_type_id.recurly_billing",
-//        'title' => $this->t('Update billing information'),
-//        'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
-//        'weight' => 100,
-//      );
       $this->derivatives["$entity_type_id.recurly_change_tab"] = array(
         'route_name' => "entity.$entity_type_id.recurly_change",
         'weight' => 200,
         'title' => $this->t('Change plan'),
         'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
+      );
+      $this->derivatives["$entity_type_id.cancel_tab"] = array(
+        'route_name' => "entity.$entity_type_id.recurly_cancellatest",
+        'title' => $this->t('Cancel'),
+        'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
+        'weight' => 220,
+      );
+      $this->derivatives["$entity_type_id.reactivate_tab"] = array(
+        'route_name' => "entity.$entity_type_id.recurly_reactivatelatest",
+        'title' => $this->t('Reactivate'),
+        'parent_id' => "recurly.entities:$entity_type_id.recurly_tab",
+        'weight' => 220,
       );
     }
 
