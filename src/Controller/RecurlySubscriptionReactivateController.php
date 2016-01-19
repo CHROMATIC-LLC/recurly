@@ -37,7 +37,7 @@ class RecurlySubscriptionReactivateController extends ControllerBase {
 
     // Load the subscription.
     if ($subscription_id === 'latest') {
-      $local_account = recurly_account_load(['entity_type' => $entity_type, $entity_type_id => $entity->id()], TRUE);
+      $local_account = recurly_account_load(['entity_type' => $entity_type, 'entity_id' => $entity->id()], TRUE);
       $subscriptions = recurly_account_get_subscriptions($local_account->account_code, 'active');
       $subscription = reset($subscriptions);
     }
@@ -63,7 +63,7 @@ class RecurlySubscriptionReactivateController extends ControllerBase {
       return;
     }
 
-    return $this->redirect("entity.$entity_type.recurly_subscriptionlist", [$entity_type_id => $account->entity_id]);
+    return $this->redirect("entity.$entity_type.recurly_subscriptionlist", [$entity_type_id => $entity->id()]);
   }
 
 }

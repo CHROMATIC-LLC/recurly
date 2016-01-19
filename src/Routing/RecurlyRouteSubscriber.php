@@ -261,6 +261,26 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
 
         $collection->add("entity.$entity_type_id.recurly_invoicepdf", $route);
       }
+      if (\Drupal::config('recurly.settings')->get('recurly_coupon_page') ?: 1) {
+        if ($recurly_coupon = $entity_type->getLinkTemplate('recurly-coupon')) {
+          $route = new Route(
+            $recurly_coupon,
+            array(
+              '_form' => '\Drupal\recurly\Form\RecurlyRedeemCouponForm',
+              '_title' => 'Redeem coupon',
+              'operation' => 'update',
+            ),
+            array(
+              '_entity_access' => "$entity_type_id.update",
+              '_access_check_recurly_user' => 'TRUE',
+              '_access_check_recurly_default' => 'TRUE',
+            ),
+            $options
+          );
+
+          $collection->add("entity.$entity_type_id.recurly_coupon", $route);
+        }
+      }
     }
   }
 

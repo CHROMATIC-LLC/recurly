@@ -631,8 +631,9 @@ function recurly_url($operation, $context) {
  */
 function recurly_recurly_url_info($operation, $context) {
   // Only provide URLs for built-in page types.
-  $recurly_entity_type = \Drupal::config('recurly.settings')->get('recurly_entity_type');
-  if (empty($recurly_entity_type) || $recurly_entity_type !== $context['entity_type']) {
+  $recurly_entity_type = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+  $context_entity_type = empty($context['entity_type']) ? NULL : $context['entity_type'];
+  if (empty($recurly_entity_type) || $recurly_entity_type !== $context_entity_type) {
     return;
   }
 
@@ -648,19 +649,19 @@ function recurly_recurly_url_info($operation, $context) {
       ]);
 
     case 'cancel':
-      return Url::fromRoute('recurly.subscription_cancel', [
-        'entity' => $context['entity']->id(),
+      return Url::fromRoute("entity.$recurly_entity_type.recurly_cancel", [
+        $recurly_entity_type => $context['entity']->id(),
         'subscription_id' => $context['subscription']->uuid,
       ]);
 
     case 'reactivate':
-      return Url::fromRoute('recurly.subscription_reactivate', [
-        'entity' => $context['entity']->id(),
+      return Url::fromRoute("entity.$recurly_entity_type.recurly_reactivate", [
+        $recurly_entity_type => $context['entity']->id(),
         'subscription_id' => $context['subscription']->uuid,
       ]);
 
     case 'redeem_coupon':
-      return Url::fromRoute('recurly.redeem_coupon', ['entity' => $context['entity']->id()]);
+      return Url::fromRoute("entity.$recurly_entity_type.recurly_coupon", [$recurly_entity_type => $context['entity']->id()]);
   }
 }
 
@@ -1129,5 +1130,6 @@ function recurly_entity_type_alter(array &$entity_types) {
     $entity_type->setLinkTemplate('recurly-invoices', $entity_type->getLinkTemplate('canonical') . '/subscription/invoices');
     $entity_type->setLinkTemplate('recurly-invoice', $entity_type->getLinkTemplate('canonical') . '/subscription/invoices/{invoice_number}');
     $entity_type->setLinkTemplate('recurly-invoicepdf', $entity_type->getLinkTemplate('canonical') . '/subscription/invoices/{invoice_number}/pdf');
+    $entity_type->setLinkTemplate('recurly-coupon', $entity_type->getLinkTemplate('canonical') . '/subscription/redeem-coupon');
   }
 }
