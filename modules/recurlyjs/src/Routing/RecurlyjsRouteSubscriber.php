@@ -52,6 +52,7 @@ class RecurlyJsRouteSubscriber extends RouteSubscriberBase {
       ),
     );
     if ($recurlyjs_signup = $entity_type->getLinkTemplate('recurlyjs-signup')) {
+      // Create the route object.
       $route = new Route(
         $recurlyjs_signup,
         array(
@@ -60,13 +61,13 @@ class RecurlyJsRouteSubscriber extends RouteSubscriberBase {
           'operation' => 'signup',
         ),
         array(
-          '_permission' => 'manage recurly subscription',
+          '_entity_access' => "$entity_type_id.update",
           '_access_check_recurly_user' => 'TRUE',
           '_access_check_recurly_list' => 'TRUE',
         ),
         $options
       );
-
+      // Give it a name and add it to the route collection.
       $collection->add("entity.$entity_type_id.recurlyjs_signup", $route);
     }
     if ($recurlyjs_billing = $entity_type->getLinkTemplate('recurlyjs-billing')) {
@@ -78,7 +79,7 @@ class RecurlyJsRouteSubscriber extends RouteSubscriberBase {
           'operation' => 'update_billing',
         ),
         array(
-          '_permission' => 'manage recurly subscription',
+          '_entity_access' => "$entity_type_id.update",
           '_access_check_recurly_user' => 'TRUE',
           '_access_check_recurly_list' => 'TRUE',
         ),
@@ -88,8 +89,6 @@ class RecurlyJsRouteSubscriber extends RouteSubscriberBase {
       $collection->add("entity.$entity_type_id.recurlyjs_billing", $route);
     }
   }
-
-
 
   /**
    * {@inheritdoc}

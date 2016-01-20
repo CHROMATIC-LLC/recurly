@@ -55,6 +55,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
       );
 
       if ($recurly_subscriptionlist = $entity_type->getLinkTemplate('recurly-subscriptionlist')) {
+        // Create route.
         $route = new Route(
           $recurly_subscriptionlist,
           array(
@@ -69,7 +70,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           ),
           $options
         );
-
+        // Give it a name and add to the route collection.
         $collection->add("entity.$entity_type_id.recurly_subscriptionlist", $route);
       }
 
@@ -127,7 +128,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           ),
           $options
         );
-
+        // Give it a name and add it to the route collection.
         $collection->add("entity.$entity_type_id.recurly_signup", $route);
       }
       if ($recurly_cancel_latest = $entity_type->getLinkTemplate('recurly-cancellatest')) {
