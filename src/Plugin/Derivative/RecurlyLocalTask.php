@@ -29,7 +29,7 @@ class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface 
   protected $entityManager;
 
   /**
-   * Creates an DevelLocalTask object.
+   * Creates a RecurlyLocalTask object.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
@@ -55,11 +55,20 @@ class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface 
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
+    // We are creating our local menu tasks here.
+    // $base_plugin_definition contains our base class(\Drupal\Core\Menu\LocalTaskDefault),
+    // the deriver class(this), provider(recurly) and id(recurly.entities).
+    // See recurly.links.task.yml.
     $this->derivatives = array();
+    // Get the entity type associated with recurly.
     $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    // Get all the plugins available to the entity (block, menu, user, etc.).
     $entity_manager_definitions = $this->entityManager->getDefinitions();
+    // Pull our entity type.
     $entity_type = $entity_manager_definitions[$entity_type_id];
+    // Get the canonical path for this entity and recurly.
     $has_canonical_path = $entity_type->hasLinkTemplate('recurly-subscriptionlist');
+    // If we have the canonical path for this entity type, add tabs.
     if ($has_canonical_path) {
       $this->derivatives["$entity_type_id.recurly_tab"] = array(
         'route_name' => "entity.$entity_type_id.recurly_subscriptionlist",
@@ -104,7 +113,7 @@ class RecurlyLocalTask extends DeriverBase implements ContainerDeriverInterface 
         'weight' => 500,
       );
     }
-
+    // Add the tabs to $base_plugin_definition.
     foreach ($this->derivatives as &$entry) {
       $entry += $base_plugin_definition;
     }
