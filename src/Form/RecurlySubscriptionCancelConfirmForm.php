@@ -152,7 +152,7 @@ class RecurlySubscriptionCancelConfirmForm extends FormBase {
           '@plan' => $subscription->plan->name,
           '@date' => recurly_format_date($subscription->current_period_ends_at),
         ]));
-        return $this->redirect("entity.$entity_type.recurly_subscriptionlist", [$entity_type => $entity->id()]);
+        $form_state->setRedirect("entity.$entity_type.recurly_subscriptionlist", [$entity_type => $entity->id()]);
       }
       catch (\Recurly_Error $e) {
         drupal_set_message($this->t('The plan could not be canceled because the billing service encountered an error.'), 'error');
