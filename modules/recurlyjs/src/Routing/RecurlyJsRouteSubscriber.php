@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\recurlyjs\Routing\RecurlyRouteSubscriber.
+ * Contains \Drupal\recurlyjs\Routing\RecurlyJsRouteSubscriber.
  */
 
 namespace Drupal\recurlyjs\Routing;

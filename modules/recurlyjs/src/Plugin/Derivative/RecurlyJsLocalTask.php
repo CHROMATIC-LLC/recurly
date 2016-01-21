@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\recurlyjs\Plugin\Derivative\RecurlyLocalTask.
+ * Contains \Drupal\recurlyjs\Plugin\Derivative\RecurlyJsLocalTask.
  */
 
 namespace Drupal\recurlyjs\Plugin\Derivative;
