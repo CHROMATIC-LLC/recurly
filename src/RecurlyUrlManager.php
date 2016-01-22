@@ -25,6 +25,6 @@ class RecurlyUrlManager {
       $subdomain = \Drupal::config('recurly.settings')->get('recurly_subdomain');
     }
 
-    return \Drupal\Core\Url::fromUri('https://' . $subdomain . '.recurly.com/' . $path)->getUri();
+    return \Drupal\Core\Url::fromUri('https://' . $subdomain . '.recurly.com/' . $path);
   }
 }
