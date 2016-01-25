@@ -49,7 +49,8 @@ class RecurlySubscriptionRoutes {
       [
         '_entity_access' => 'entity.update',
         '_access_check_recurly_user' => 'TRUE',
-        '_access_check_recurly_default' => 'TRUE',
+        //'_access_check_recurly_default' => 'TRUE',
+        '_access_check_recurly_select_plan' => 'TRUE',
       ],
       ['parameters' => ['entity' => ['type' => 'entity:' . $entity_type]]]
     );
@@ -65,6 +66,7 @@ class RecurlySubscriptionRoutes {
         '_entity_access' => 'entity.update',
         '_access_check_recurly_user' => 'TRUE',
         '_access_check_recurly_default' => 'TRUE',
+
       ],
       ['parameters' => ['entity' => ['type' => 'entity:' . $entity_type]]]
     );
