@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\recurly\Access\RecurlyAccessSelectPlan.
+ * Contains \Drupal\recurly\Access\RecurlyAccessReactivateLatest.
  */
 
 namespace Drupal\recurly\Access;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Checks if the select operation should be accessible.
  */
-class RecurlyAccessSelectPlan extends RecurlyAccess {
+class RecurlyAccessReactivateLatest extends RecurlyAccess {
 
   /**
    * {@inheritdoc}
@@ -24,9 +24,14 @@ class RecurlyAccessSelectPlan extends RecurlyAccess {
   public function access(Route $route, RouteMatchInterface $route_match) {
     $entity = $route_match->getParameter($this->entityType);
     $this->getLocalAccount($entity, $this->entityType);
-    if ($this->localAccount || $this->subscriptionPlans) {
-      return AccessResult::allowed();
+    if ($this->recurlySubscriptionMax == 1) {
+      $active_subscriptions = $this->localAccount ? recurly_account_get_subscriptions($this->localAccount->account_code, 'active') : [];
+      $active_subscription = reset($active_subscriptions);
+      if (!empty($this->localAccount) && !empty($active_subscription) && $active_subscription->state == 'canceled') {
+        return AccessResult::allowed();
+      }
     }
+
     return AccessResult::forbidden();
   }
 

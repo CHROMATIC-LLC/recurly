@@ -81,12 +81,11 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
             '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionSelectPlanController::planSelect',
             '_title' => 'Change plan',
             'subscription_id' => 'latest',
-            'operation' => 'change_plan_latest',
           ),
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_change_plan' => 'TRUE',
           ),
           $options
         );
@@ -119,12 +118,11 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionSelectPlanController::planSelect',
             '_title' => \Drupal::config('recurly.settings')->get('recurly_subscription_max') == 1 ? 'Signup' : 'Add plan',
-            'operation' => 'select_plan',
           ),
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_select_plan' => 'TRUE',
           ),
           $options
         );
@@ -138,12 +136,11 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
             '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionCancelController::subscriptionCancel',
             '_title' => 'Cancel subscription',
             'subscription_id' => 'latest',
-            'operation' => 'cancel_latest',
           ),
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_cancel' => 'TRUE',
           ),
           $options
         );
@@ -157,7 +154,6 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
             '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionCancelController::subscriptionCancel',
             '_title' => 'Cancel subscription',
             'subscription_id' => 'latest',
-            'operation' => 'cancel',
           ),
           array(
             '_entity_access' => "$entity_type_id.update",
@@ -176,12 +172,11 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionReactivateController::reactivateSubscription',
             '_title' => 'Reactivate',
-            'operation' => 'reactivate_latest',
           ),
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_reactivate' => 'TRUE',
           ),
           $options
         );
@@ -194,7 +189,6 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_controller' => '\Drupal\recurly\Controller\RecurlySubscriptionReactivateController::reactivateSubscription',
             '_title' => 'Reactivate',
-            'operation' => 'reactivate',
           ),
           array(
             '_entity_access' => "$entity_type_id.update",

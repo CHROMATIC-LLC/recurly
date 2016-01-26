@@ -15,10 +15,35 @@ services:
       - { name: access_check, applies_to: _access_check_recurly_list }
     arguments: ['@entity.manager', '@current_route_match']
   access_check.recurly.select:
-      class: Drupal\recurly\Access\RecurlyAccessSelectPlan
-      tags:
-        - { name: access_check, applies_to: _access_check_recurly_select_plan }
-      arguments: ['@entity.manager', '@current_route_match']
+    class: Drupal\recurly\Access\RecurlyAccessSelectPlan
+    tags:
+      - { name: access_check, applies_to: _access_check_recurly_select_plan }
+    arguments: ['@entity.manager', '@current_route_match']
+  access_check.recurly.reactivate:
+    class: Drupal\recurly\Access\RecurlyAccessReactivateLatest
+    tags:
+      - { name: access_check, applies_to: _access_check_recurly_reactivate }
+    arguments: ['@entity.manager', '@current_route_match']
+  access_check.recurly.cancel:
+    class: Drupal\recurly\Access\RecurlyAccessCancelLatest
+    tags:
+      - { name: access_check, applies_to: _access_check_recurly_cancel }
+    arguments: ['@entity.manager', '@current_route_match']
+  access_check.recurly.cancel:
+    class: Drupal\recurly\Access\RecurlyAccessCancelLatest
+    tags:
+      - { name: access_check, applies_to: _access_check_recurly_cancel }
+    arguments: ['@entity.manager', '@current_route_match']
+  access_check.recurly.change:
+    class: Drupal\recurly\Access\RecurlyAccessChangePlanLatest
+    tags:
+      - { name: access_check, applies_to: _access_check_recurly_change_plan }
+    arguments: ['@entity.manager', '@current_route_match']
+  access_check.recurlyjs.change:
+    class: Drupal\recurly\Access\RecurlyAccessSignUp
+    tags:
+      - { name: access_check, applies_to: _access_check_recurly_signup }
+    arguments: ['@entity.manager', '@current_route_match']
   recurly.pager_manager:
     class: Drupal\recurly\RecurlyPagerManager
   recurly.token_manager:
