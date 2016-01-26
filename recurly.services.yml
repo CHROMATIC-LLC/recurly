@@ -3,43 +3,43 @@ services:
     class: Drupal\recurly\Access\RecurlyAccessDefault
     tags:
       - { name: access_check, applies_to: _access_check_recurly_default }
-    arguments: ['@entity.manager', '@current_route_match']
+    arguments: ['@current_route_match']
   access_check.recurly.user.self:
     class: Drupal\recurly\Access\RecurlyAccessUser
     tags:
       - { name: access_check, applies_to: _access_check_recurly_user }
-    arguments: ['@entity.manager', '@current_route_match']
+    arguments: ['@current_route_match']
   access_check.recurly.list:
     class: Drupal\recurly\Access\RecurlyAccessList
     tags:
       - { name: access_check, applies_to: _access_check_recurly_list }
-    arguments: ['@entity.manager', '@current_route_match']
+    arguments: ['@current_route_match']
   access_check.recurly.select:
     class: Drupal\recurly\Access\RecurlyAccessSelectPlan
     tags:
       - { name: access_check, applies_to: _access_check_recurly_select_plan }
-    arguments: ['@entity.manager', '@current_route_match']
+    arguments: ['@current_route_match']
   access_check.recurly.reactivate:
     class: Drupal\recurly\Access\RecurlyAccessReactivateLatest
     tags:
       - { name: access_check, applies_to: _access_check_recurly_reactivate }
-    arguments: ['@entity.manager', '@current_route_match']
+    arguments: ['@current_route_match']
   access_check.recurly.cancel:
     class: Drupal\recurly\Access\RecurlyAccessCancelLatest
     tags:
       - { name: access_check, applies_to: _access_check_recurly_cancel }
-    arguments: ['@entity.manager', '@current_route_match']
+    arguments: ['@current_route_match']
   access_check.recurly.cancel:
     class: Drupal\recurly\Access\RecurlyAccessCancelLatest
     tags:
       - { name: access_check, applies_to: _access_check_recurly_cancel }
-    arguments: ['@entity.manager', '@current_route_match']
+    arguments: ['@current_route_match']
   access_check.recurly.change:
     class: Drupal\recurly\Access\RecurlyAccessChangePlanLatest
     tags:
       - { name: access_check, applies_to: _access_check_recurly_change_plan }
-    arguments: ['@entity.manager', '@current_route_match']
-  access_check.recurlyjs.change:
+    arguments: ['@current_route_match']
+  access_check.recurly.change:
     class: Drupal\recurly\Access\RecurlyAccessSignUp
     tags:
       - { name: access_check, applies_to: _access_check_recurly_signup }

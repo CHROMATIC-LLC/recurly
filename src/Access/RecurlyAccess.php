@@ -8,11 +8,9 @@
 namespace Drupal\recurly\Access;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\EventSubscriber\EntityRouteAlterSubscriber;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -23,11 +21,13 @@ abstract class RecurlyAccess implements AccessInterface {
   protected $recurlySubscriptionMax;
   protected $localAccount;
   protected $entityType;
+  protected $routeMatch;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(EntityManagerInterface $entity_manager) {
+  public function __construct(RouteMatchInterface $route_match) {
+    $this->routeMatch = $route_match;
     $this->entityType = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
     $this->subscriptionPlans = \Drupal::config('recurly.settings')->get('recurly_subscription_plans') ?: [];
     $this->recurlySubscriptionMax = \Drupal::config('recurly.settings')->get('recurly_subscription_max');
@@ -36,7 +36,7 @@ abstract class RecurlyAccess implements AccessInterface {
   /**
    * {@inheritdoc}
    */
-  public function access(Route $route, RouteMatchInterface $route_match) {
+  public function access() {
   }
 
   /**
@@ -55,8 +55,13 @@ abstract class RecurlyAccess implements AccessInterface {
     return FALSE;
   }
 
-  protected function getLocalAccount(EntityInterface $entity, $entity_type) {
-    $this->localAccount = recurly_account_load(['entity_type' => $entity_type, 'entity_id' => $entity->id()], TRUE);
+  /**
+   * Loads the Recurly account.
+   */
+  protected function setLocalAccount() {
+    $entity = $this->routeMatch->getCurrentRouteMatch()->getParameter($this->entityType);
+    $entity_id = method_exists($entity, 'id') ? $entity->id() : NULL;
+    $this->localAccount = recurly_account_load(['entity_type' => $this->entityType, 'entity_id' => $entity_id], TRUE);
   }
 
 }

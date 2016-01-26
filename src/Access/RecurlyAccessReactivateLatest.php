@@ -7,24 +7,18 @@
 namespace Drupal\recurly\Access;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Routing\Access\AccessInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Checks if the select operation should be accessible.
+ * Checks if the reactivate latest operation should be accessible.
  */
 class RecurlyAccessReactivateLatest extends RecurlyAccess {
 
   /**
    * {@inheritdoc}
    */
-  public function access(Route $route, RouteMatchInterface $route_match) {
-    $entity = $route_match->getParameter($this->entityType);
-    $this->getLocalAccount($entity, $this->entityType);
+  public function access() {
     if ($this->recurlySubscriptionMax == 1) {
+      $this->setLocalAccount();
       $active_subscriptions = $this->localAccount ? recurly_account_get_subscriptions($this->localAccount->account_code, 'active') : [];
       $active_subscription = reset($active_subscriptions);
       if (!empty($this->localAccount) && !empty($active_subscription) && $active_subscription->state == 'canceled') {
