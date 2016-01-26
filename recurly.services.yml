@@ -25,3 +25,5 @@ services:
     arguments: ['@entity.manager']
     tags:
       - { name: event_subscriber }
+  recurly.format_manager:
+    class: Drupal\recurly\RecurlyFormatManager
