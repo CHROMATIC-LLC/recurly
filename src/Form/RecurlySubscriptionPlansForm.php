@@ -66,8 +66,6 @@ class RecurlySubscriptionPlansForm extends FormBase {
       return $this->t('No plans could be retrieved from Recurly. Recurly reported the following error: "@error"', ['@error' => $e->getMessage()]);
     }
     $form['weights']['#tree'] = TRUE;
-    // @todo Get rid of next line. Left to show how it used to be.
-    // $recurly_format_manager = \Drupal::service('recurly.format_manager');
 
     $plan_options = [];
     $count = 0;
