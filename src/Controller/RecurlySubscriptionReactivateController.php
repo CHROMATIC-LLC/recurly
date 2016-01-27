@@ -25,16 +25,16 @@ class RecurlySubscriptionReactivateController extends ControllerBase {
    *
    * @var \Drupal\recurly\RecurlyFormatManager
    */
-  protected $formatter;
+  protected $recurly_formatter;
 
   /**
    * Constructs a \Drupal\recurly\Controller\RecurlySubscriptionReactivateController object.
    *
-   * @param \Drupal\recurly\RecurlyFormatManager $formatter
+   * @param \Drupal\recurly\RecurlyFormatManager $recurly_formatter
    *   The Recurly formatter to be used for formatting.
    */
   public function __construct(RecurlyFormatManager $recurly_formatter) {
-    $this->formatter = $recurly_formatter;
+    $this->recurly_formatter = $recurly_formatter;
   }
 
   /**
@@ -83,7 +83,7 @@ class RecurlySubscriptionReactivateController extends ControllerBase {
       $subscription->reactivate();
       drupal_set_message($this->t('Plan @plan reactivated! Normal billing will resume on @date.', [
         '@plan' => $subscription->plan->name,
-        '@date' => $this->formatter->formatDate($subscription->current_period_ends_at),
+        '@date' => $this->recurly_formatter->formatDate($subscription->current_period_ends_at),
       ]));
     }
     catch (Recurly_Error $e) {

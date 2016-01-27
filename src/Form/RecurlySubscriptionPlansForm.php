@@ -23,16 +23,16 @@ class RecurlySubscriptionPlansForm extends FormBase {
    *
    * @var \Drupal\recurly\RecurlyFormatManager
    */
-  protected $formatter;
+  protected $recurly_formatter;
 
   /**
    * Constructs a \Drupal\recurly\Form\RecurlySubscriptionPlansForm object.
    *
-   * @param \Drupal\recurly\RecurlyFormatManager $formatter
+   * @param \Drupal\recurly\RecurlyFormatManager $recurly_formatter
    *   The Recurly formatter to be used for formatting.
    */
   public function __construct(RecurlyFormatManager $recurly_formatter) {
-    $this->formatter = $recurly_formatter;
+    $this->recurly_formatter = $recurly_formatter;
   }
 
   /**
@@ -85,13 +85,13 @@ class RecurlySubscriptionPlansForm extends FormBase {
       foreach ($unit_amounts as $unit_amount) {
         $form['#plans'][$plan->plan_code]['unit_amounts'][$unit_amount->currencyCode] = $this->t('@unit_price every @interval_length @interval_unit',
           [
-            '@unit_price' => $this->formatter->formatCurrency($unit_amount->amount_in_cents, $unit_amount->currencyCode),
+            '@unit_price' => $this->recurly_formatter->formatCurrency($unit_amount->amount_in_cents, $unit_amount->currencyCode),
             '@interval_length' => $plan->plan_interval_length,
             '@interval_unit' => $plan->plan_interval_unit,
           ]);
       }
       foreach ($setup_fees as $setup_fee) {
-        $form['#plans'][$plan->plan_code]['setup_amounts'][$unit_amount->currencyCode] = $this->formatter->formatCurrency($setup_fee->amount_in_cents, $setup_fee->currencyCode);
+        $form['#plans'][$plan->plan_code]['setup_amounts'][$unit_amount->currencyCode] = $this->recurly_formatter->formatCurrency($setup_fee->amount_in_cents, $setup_fee->currencyCode);
       }
       $form['weights'][$plan->plan_code] = [
         '#type' => 'hidden',

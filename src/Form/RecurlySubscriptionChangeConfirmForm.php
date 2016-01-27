@@ -22,16 +22,16 @@ class RecurlySubscriptionChangeConfirmForm extends FormBase {
    *
    * @var \Drupal\recurly\RecurlyFormatManager
    */
-  protected $formatter;
+  protected $recurly_formatter;
 
   /**
    * Constructs a \Drupal\recurly\Form\RecurlySubscriptionChangeConfirmForm object.
    *
-   * @param \Drupal\recurly\RecurlyFormatManager $formatter
+   * @param \Drupal\recurly\RecurlyFormatManager $recurly_formatter
    *   The Recurly formatter to be used for formatting.
    */
   public function __construct(RecurlyFormatManager $recurly_formatter) {
-    $this->formatter = $recurly_formatter;
+    $this->recurly_formatter = $recurly_formatter;
   }
 
   /**
@@ -151,7 +151,7 @@ class RecurlySubscriptionChangeConfirmForm extends FormBase {
 
     $message = $this->t('Plan changed to @plan!', ['@plan' => $new_plan->name]);
     if ($timeframe !== 'now') {
-      $message .= ' ' . $this->t('Changes will become active starting <strong>@date</strong>.', ['@date' => $this->formatter->formatDate($subscription->current_period_ends_at)]);
+      $message .= ' ' . $this->t('Changes will become active starting <strong>@date</strong>.', ['@date' => $this->recurly_formatter->formatDate($subscription->current_period_ends_at)]);
     }
     drupal_set_message($message);
     $form_state->setRedirect("entity.$entity_type.recurly_subscriptionlist", [$entity_type => $entity->id()]);
