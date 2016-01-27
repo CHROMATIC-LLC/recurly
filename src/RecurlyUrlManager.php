@@ -17,8 +17,8 @@ class RecurlyUrlManager {
    * @param $subdomain $string
    *   A subdomain string.
    *
-   * @return string
-   *   The Recurly URL for the current account w/optional path appended.
+   * @return \Drupal\Core\Url
+   *   Returns a \Drupal\Core\Url object.
    */
   public function hostedUrl($path = '', $subdomain = NULL) {
     if (!$subdomain) {
