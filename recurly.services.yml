@@ -29,11 +29,6 @@ services:
     tags:
       - { name: access_check, applies_to: _access_check_recurly_cancel }
     arguments: ['@current_route_match']
-  access_check.recurly.cancel:
-    class: Drupal\recurly\Access\RecurlyAccessCancelLatest
-    tags:
-      - { name: access_check, applies_to: _access_check_recurly_cancel }
-    arguments: ['@current_route_match']
   access_check.recurly.change:
     class: Drupal\recurly\Access\RecurlyAccessChangePlanLatest
     tags:
