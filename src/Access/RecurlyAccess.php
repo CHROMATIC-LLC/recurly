@@ -63,4 +63,25 @@ abstract class RecurlyAccess implements AccessInterface {
     $this->localAccount = recurly_account_load(['entity_type' => $this->entityType, 'entity_id' => $entity_id], TRUE);
   }
 
+  /**
+   * Checks to see if there are either canceled or active subscriptions to view.
+   *
+   * @param string $state
+   *   Either active or canceled.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   Returns the result from the access check.
+   */
+  protected function switchSubscriptionState($state) {
+    if ($this->recurlySubscriptionMax == 1) {
+      $active_subscriptions = $this->localAccount ? recurly_account_get_subscriptions($this->localAccount->account_code, 'active') : [];
+      $active_subscription = reset($active_subscriptions);
+      if (!empty($active_subscription) && $active_subscription->state == $state) {
+        return AccessResult::allowed();
+      }
+    }
+
+    return AccessResult::forbidden();
+  }
+
 }

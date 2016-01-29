@@ -85,6 +85,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_local_account' => 'TRUE',
             '_access_check_recurly_change_plan' => 'TRUE',
           ),
           $options
@@ -104,7 +105,8 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_local_account' => 'TRUE',
+            '_access_check_recurly_change_plan' => 'TRUE',
           ),
           $options
         );
@@ -140,6 +142,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_local_account' => 'TRUE',
             '_access_check_recurly_cancel' => 'TRUE',
           ),
           $options
@@ -158,7 +161,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_local_account' => 'TRUE',
           ),
           $options
         );
@@ -176,6 +179,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
+            '_access_check_recurly_local_account' => 'TRUE',
             '_access_check_recurly_reactivate' => 'TRUE',
           ),
           $options
@@ -193,7 +197,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_local_account' => 'TRUE',
           ),
           $options
         );
@@ -213,7 +217,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_local_account' => 'TRUE',
           ),
           $options
         );
@@ -231,7 +235,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_local_account' => 'TRUE',
           ),
           $options
         );
@@ -249,7 +253,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
           array(
             '_entity_access' => "$entity_type_id.update",
             '_access_check_recurly_user' => 'TRUE',
-            '_access_check_recurly_default' => 'TRUE',
+            '_access_check_recurly_local_account' => 'TRUE',
           ),
           $options
         );
@@ -268,7 +272,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
             array(
               '_entity_access' => "$entity_type_id.update",
               '_access_check_recurly_user' => 'TRUE',
-              '_access_check_recurly_default' => 'TRUE',
+              '_access_check_recurly_local_account' => 'TRUE',
             ),
             $options
           );

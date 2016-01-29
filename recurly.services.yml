@@ -1,8 +1,8 @@
 services:
   access_check.recurly.default:
-    class: Drupal\recurly\Access\RecurlyAccessDefault
+    class: Drupal\recurly\Access\RecurlyAccessLocalAccount
     tags:
-      - { name: access_check, applies_to: _access_check_recurly_default }
+      - { name: access_check, applies_to: _access_check_recurly_local_account }
     arguments: ['@current_route_match']
   access_check.recurly.user.self:
     class: Drupal\recurly\Access\RecurlyAccessUser

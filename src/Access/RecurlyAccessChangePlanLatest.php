@@ -21,7 +21,7 @@ class RecurlyAccessChangePlanLatest extends RecurlyAccess {
       $this->setLocalAccount();
       $active_subscriptions = $this->localAccount ? recurly_account_get_subscriptions($this->localAccount->account_code, 'active') : [];
       $active_subscription = reset($active_subscriptions);
-      if (!empty($this->localAccount) && count($this->subscriptionPlans) && !empty($active_subscription)) {
+      if (count($this->subscriptionPlans) && !empty($active_subscription)) {
         return AccessResult::allowed();
       }
     }

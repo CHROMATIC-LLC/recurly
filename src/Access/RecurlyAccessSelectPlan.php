@@ -7,6 +7,7 @@
 namespace Drupal\recurly\Access;
 
 use Drupal\Core\Access\AccessResult;
+use Symfony\Component\Routing\Route;
 
 /**
  * Checks if the select operation should be accessible.
@@ -17,8 +18,8 @@ class RecurlyAccessSelectPlan extends RecurlyAccess {
    * {@inheritdoc}
    */
   public function access() {
-    $this->setLocalAccount();
-    if ($this->localAccount || $this->subscriptionPlans) {
+    $route = $this->routeMatch->getCurrentRouteMatch()->getRouteObject();
+    if (!empty($this->subscriptionPlans) && $this->pathIsSignup($route) || $this->recurlySubscriptionMax != 1) {
       return AccessResult::allowed();
     }
     return AccessResult::forbidden();
