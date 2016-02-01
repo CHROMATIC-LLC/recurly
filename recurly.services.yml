@@ -1,5 +1,5 @@
 services:
-  access_check.recurly.default:
+  access_check.recurly.local.account:
     class: Drupal\recurly\Access\RecurlyAccessLocalAccount
     tags:
       - { name: access_check, applies_to: _access_check_recurly_local_account }
