@@ -10,6 +10,7 @@ namespace Drupal\recurlyjs\Routing;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\Core\Routing\RoutingEvents;
+use Drupal\recurly\RecurlyConfigManager;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -26,13 +27,23 @@ class RecurlyJsRouteSubscriber extends RouteSubscriberBase {
   protected $entityManager;
 
   /**
+   * The config service.
+   *
+   * @var \Drupal\recurly\RecurlyConfigManager
+   */
+  protected $recurlyConfig;
+
+  /**
    * Constructs a new RouteSubscriber object.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity type manager.
+   * @param \Drupal\recurly\RecurlyConfigManager $recurly_config
+   *   Recurly configuration manager.
    */
-  public function __construct(EntityManagerInterface $entity_manager) {
+  public function __construct(EntityManagerInterface $entity_manager, RecurlyConfigManager $recurly_config) {
     $this->entityManager = $entity_manager;
+    $this->recurlyConfig = $recurly_config;
   }
 
   /**

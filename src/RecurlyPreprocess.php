@@ -8,11 +8,29 @@ namespace Drupal\recurly;
 
 use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Link;
+use Drupal\recurly\RecurlyConfigManager;
 
 /**
  * Service to abstract preprocess hooks.
  */
 class RecurlyPreprocess {
+
+  /**
+   * The config service.
+   *
+   * @var \Drupal\recurly\RecurlyConfigManager
+   */
+  protected $recurlyConfig;
+
+  /**
+   * Constructs a \Drupal\recurly\Form\RecurlyFormBase object.
+   *
+   * @param \Drupal\recurly\RecurlyConfigManager $recurly_config
+   *   Recurly configuration manager.
+   */
+  public function __construct(RecurlyConfigManager $recurly_config) {
+    $this->recurlyConfig = $recurly_config;
+  }
 
   /**
    * Implements hook_preprocess_recurly_subscription_plan_select().
@@ -170,7 +188,7 @@ class RecurlyPreprocess {
    *   Theme variables to preprocess.
    */
   public function preprocessRecurlyInvoice(array &$variables) {
-    $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $entity_type_id = $this->recurlyConfig->entityType();
     $invoice = $variables['invoice'];
     $invoice_account = $variables['invoice_account'];
     $entity = $variables['entity'];
