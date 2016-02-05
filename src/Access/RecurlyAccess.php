@@ -10,6 +10,7 @@ namespace Drupal\recurly\Access;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\recurly\RecurlyConfigManager;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -23,11 +24,20 @@ abstract class RecurlyAccess implements AccessInterface {
   protected $routeMatch;
 
   /**
+   * The config service.
+   *
+   * @var \Drupal\recurly\RecurlyConfigManager
+   */
+  protected $recurly_config;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(RouteMatchInterface $route_match) {
+  public function __construct(RouteMatchInterface $route_match, RecurlyConfigManager $recurly_config) {
     $this->routeMatch = $route_match;
-    $this->entityType = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $this->recurly_config = $recurly_config;
+    // @TODO: Remove entityType property.
+    $this->entityType = $this->recurly_config->entityType();
     $this->subscriptionPlans = \Drupal::config('recurly.settings')->get('recurly_subscription_plans') ?: [];
     $this->recurlySubscriptionMax = \Drupal::config('recurly.settings')->get('recurly_subscription_max');
   }
