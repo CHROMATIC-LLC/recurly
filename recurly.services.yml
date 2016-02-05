@@ -52,3 +52,5 @@ services:
       - { name: event_subscriber }
   recurly.format_manager:
     class: Drupal\recurly\RecurlyFormatManager
+  recurly.config_manager:
+    class: Drupal\recurly\RecurlyConfigManager
