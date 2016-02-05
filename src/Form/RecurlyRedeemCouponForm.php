@@ -27,7 +27,7 @@ class RecurlyRedeemCouponForm extends RecurlyFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, RouteMatchInterface $route_match = NULL) {
-    $entity_type_id = $this->recurly_config->entityType();
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity = $route_match->getParameter($entity_type_id);
     $entity_type = $entity->getEntityType()->getLowercaseLabel();
     $form['#entity_type'] = $entity_type;

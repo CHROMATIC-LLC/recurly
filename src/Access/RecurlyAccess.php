@@ -28,16 +28,16 @@ abstract class RecurlyAccess implements AccessInterface {
    *
    * @var \Drupal\recurly\RecurlyConfigManager
    */
-  protected $recurly_config;
+  protected $recurlyConfig;
 
   /**
    * {@inheritdoc}
    */
   public function __construct(RouteMatchInterface $route_match, RecurlyConfigManager $recurly_config) {
     $this->routeMatch = $route_match;
-    $this->recurly_config = $recurly_config;
+    $this->recurlyConfig = $recurly_config;
     // @TODO: Remove entityType property.
-    $this->entityType = $this->recurly_config->entityType();
+    $this->entityType = $this->recurlyConfig->entityType();
     $this->subscriptionPlans = \Drupal::config('recurly.settings')->get('recurly_subscription_plans') ?: [];
     $this->recurlySubscriptionMax = \Drupal::config('recurly.settings')->get('recurly_subscription_max');
   }

@@ -23,16 +23,21 @@ class RecurlySettingsForm extends ConfigFormBase {
    *
    * @var \Drupal\recurly\RecurlyConfigManager
    */
-  protected $recurly_config;
+  protected $recurlyConfig;
 
   /**
-   * [__construct description]
-   * @param RecurlyConfigManager $recurly_config [description]
+   * Constructor.
+   *
+   * @param RecurlyConfigManager $recurly_config
+   *   Recurly configuration manger.
    */
   public function __construct(RecurlyConfigManager $recurly_config) {
-    $this->recurly_config = $recurly_config;
+    $this->recurlyConfig = $recurly_config;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('recurly.config_manager')
@@ -148,7 +153,7 @@ class RecurlySettingsForm extends ConfigFormBase {
 
     // If any of the below options change we need to rebuild the menu system.
     // Keep a record of their current values.
-    $recurly_entity_type = $this->recurly_config->entityType();
+    $recurly_entity_type = $this->recurlyConfig->entityType();
     $pages_previous_values = [
       'recurly_entity_type' => $recurly_entity_type,
       'recurly_bundle_' . $recurly_entity_type => \Drupal::config('recurly.settings')->get('recurly_bundle_' . $recurly_entity_type),

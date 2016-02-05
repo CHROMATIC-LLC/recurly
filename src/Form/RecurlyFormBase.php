@@ -22,14 +22,14 @@ abstract class RecurlyFormBase extends FormBase {
    *
    * @var \Drupal\recurly\RecurlyConfigManager
    */
-  protected $recurly_config;
+  protected $recurlyConfig;
 
   /**
    * The formatting service.
    *
    * @var \Drupal\recurly\RecurlyFormatManager
    */
-  protected $recurly_formatter;
+  protected $recurlyFormatter;
 
   /**
    * Constructs a \Drupal\recurly\Form\RecurlyFormBase object.
@@ -40,8 +40,8 @@ abstract class RecurlyFormBase extends FormBase {
    *   The Recurly formatter to be used for formatting.
    */
   public function __construct(RecurlyConfigManager $recurly_config, RecurlyFormatManager $recurly_formatter) {
-    $this->recurly_config = $recurly_config;
-    $this->recurly_formatter = $recurly_formatter;
+    $this->recurlyConfig = $recurly_config;
+    $this->recurlyFormatter = $recurly_formatter;
   }
 
   /**

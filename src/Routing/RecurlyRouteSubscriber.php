@@ -31,7 +31,7 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
    *
    * @var \Drupal\recurly\RecurlyConfigManager
    */
-  protected $recurly_config;
+  protected $recurlyConfig;
 
   /**
    * Constructs a new RouteSubscriber object.
@@ -43,14 +43,14 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
    */
   public function __construct(EntityManagerInterface $entity_manager, RecurlyConfigManager $recurly_config) {
     $this->entityManager = $entity_manager;
-    $this->recurly_config = $recurly_config;
+    $this->recurlyConfig = $recurly_config;
   }
 
   /**
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    $entity_type_id = $this->recurly_config->entityType();
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity_manager_definitions = $this->entityManager->getDefinitions();
     $entity_type = $entity_manager_definitions[$entity_type_id];
     if ($entity_type->hasLinkTemplate('recurly-subscriptionlist') || $entity_type->hasLinkTemplate('recurly-signup') || $entity_type->hasLinkTemplate('recurly-change') || $entity_type->hasLinkTemplate('recurly-billing')) {
