@@ -10,6 +10,7 @@ namespace Drupal\recurly\Routing;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\Core\Routing\RoutingEvents;
+use Drupal\recurly\RecurlyConfigManager;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -26,20 +27,30 @@ class RecurlyRouteSubscriber extends RouteSubscriberBase {
   protected $entityManager;
 
   /**
+   * The config service.
+   *
+   * @var \Drupal\recurly\RecurlyConfigManager
+   */
+  protected $recurlyConfig;
+
+  /**
    * Constructs a new RouteSubscriber object.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity type manager.
+   * @param RecurlyConfigManager $recurly_config
+   *   Recurly configuration manager.
    */
-  public function __construct(EntityManagerInterface $entity_manager) {
+  public function __construct(EntityManagerInterface $entity_manager, RecurlyConfigManager $recurly_config) {
     $this->entityManager = $entity_manager;
+    $this->recurlyConfig = $recurly_config;
   }
 
   /**
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity_manager_definitions = $this->entityManager->getDefinitions();
     $entity_type = $entity_manager_definitions[$entity_type_id];
     if ($entity_type->hasLinkTemplate('recurly-subscriptionlist') || $entity_type->hasLinkTemplate('recurly-signup') || $entity_type->hasLinkTemplate('recurly-change') || $entity_type->hasLinkTemplate('recurly-billing')) {

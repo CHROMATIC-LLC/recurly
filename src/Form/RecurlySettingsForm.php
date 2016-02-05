@@ -10,11 +10,39 @@ namespace Drupal\recurly\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\recurly\RecurlyConfigManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Recurly configuration settings form.
  */
 class RecurlySettingsForm extends ConfigFormBase {
+
+  /**
+   * The config service.
+   *
+   * @var \Drupal\recurly\RecurlyConfigManager
+   */
+  protected $recurlyConfig;
+
+  /**
+   * Constructor.
+   *
+   * @param RecurlyConfigManager $recurly_config
+   *   Recurly configuration manger.
+   */
+  public function __construct(RecurlyConfigManager $recurly_config) {
+    $this->recurlyConfig = $recurly_config;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('recurly.config_manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -125,7 +153,7 @@ class RecurlySettingsForm extends ConfigFormBase {
 
     // If any of the below options change we need to rebuild the menu system.
     // Keep a record of their current values.
-    $recurly_entity_type = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $recurly_entity_type = $this->recurlyConfig->entityType();
     $pages_previous_values = [
       'recurly_entity_type' => $recurly_entity_type,
       'recurly_bundle_' . $recurly_entity_type => \Drupal::config('recurly.settings')->get('recurly_bundle_' . $recurly_entity_type),

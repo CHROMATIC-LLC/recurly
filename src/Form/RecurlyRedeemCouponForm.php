@@ -7,42 +7,14 @@
 
 namespace Drupal\recurly\Form;
 
-use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\recurly\RecurlyFormatManager;
+use Drupal\recurly\Form\RecurlyFormBase;
 
 /**
  * Recurly redeem coupon form.
  */
-class RecurlyRedeemCouponForm extends FormBase {
-
-  /**
-   * The formatting service.
-   *
-   * @var \Drupal\recurly\RecurlyFormatManager
-   */
-  protected $recurly_formatter;
-
-  /**
-   * Constructs a \Drupal\recurly\Form\RecurlyRedeemCouponForm object.
-   *
-   * @param \Drupal\recurly\RecurlyFormatManager $recurly_formatter
-   *   The Recurly formatter to be used for formatting.
-   */
-  public function __construct(RecurlyFormatManager $recurly_formatter) {
-    $this->recurly_formatter = $recurly_formatter;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('recurly.format_manager')
-    );
-  }
+class RecurlyRedeemCouponForm extends RecurlyFormBase {
 
   /**
    * {@inheritdoc}
@@ -55,7 +27,7 @@ class RecurlyRedeemCouponForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, RouteMatchInterface $route_match = NULL) {
-    $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity = $route_match->getParameter($entity_type_id);
     $entity_type = $entity->getEntityType()->getLowercaseLabel();
     $form['#entity_type'] = $entity_type;
