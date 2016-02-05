@@ -47,7 +47,7 @@ services:
     class: Drupal\recurly\RecurlyUrlManager
   recurly.route_subscriber:
     class: Drupal\recurly\Routing\RecurlyRouteSubscriber
-    arguments: ['@entity.manager']
+    arguments: ['@entity.manager', '@recurly.config_manager']
     tags:
       - { name: event_subscriber }
   recurly.format_manager:
