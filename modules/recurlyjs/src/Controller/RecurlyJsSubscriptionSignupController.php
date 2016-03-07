@@ -16,11 +16,39 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\recurly\RecurlyConfigManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Returns responses for Recurly Subscription List.
  */
 class RecurlyJsSubscriptionSignupController extends ControllerBase {
+
+  /**
+   * The config service.
+   *
+   * @var \Drupal\recurly\RecurlyConfigManager
+   */
+  protected $recurlyConfig;
+
+  /**
+   * Constructs a RecurlyJsSubscriptionSignupController object.
+   *
+   * @param \Drupal\recurly\RecurlyConfigManager $recurly_config
+   *   Recurly configuration manager.
+   */
+  public function __construct(RecurlyConfigManager $recurly_config) {
+    $this->recurlyConfig = $recurly_config;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('recurly.config_manager')
+    );
+  }
 
   /**
    * Controller callback to trigger a user subscription.
@@ -36,7 +64,7 @@ class RecurlyJsSubscriptionSignupController extends ControllerBase {
    *   A Drupal render array.
    */
   public function subscribe(RouteMatchInterface $route_match) {
-    $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity = $route_match->getParameter($entity_type_id);
     $plan_code = $route_match->getParameter('plan_code');
     $currency = $route_match->getParameter('currency');

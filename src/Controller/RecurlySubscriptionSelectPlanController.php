@@ -8,7 +8,6 @@
 namespace Drupal\recurly\Controller;
 
 use Drupal\Component\Utility\SafeMarkup;
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -20,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Recurly select plan controller.
  */
-class RecurlySubscriptionSelectPlanController extends ControllerBase {
+class RecurlySubscriptionSelectPlanController extends RecurlyControllerBase {
 
   const SELECT_PLAN_MODE_SIGNUP = 'signup';
 
@@ -42,7 +41,7 @@ class RecurlySubscriptionSelectPlanController extends ControllerBase {
    *   subscription.
    */
   public function planSelect(RouteMatchInterface $route_match, $currency = NULL, $subscription_id = NULL) {
-    $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity = $route_match->getParameter($entity_type_id);
     $entity_type = $entity->getEntityType()->getLowercaseLabel();
     $content = $entity ? $entity->label() : $this->t('No corresponding entity loaded!');

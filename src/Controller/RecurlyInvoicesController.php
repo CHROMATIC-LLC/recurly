@@ -8,7 +8,6 @@
 namespace Drupal\recurly\Controller;
 
 use Drupal\Component\Utility\SafeMarkup;
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -20,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Returns responses for Recurly Subscription List.
  */
-class RecurlyInvoicesController extends ControllerBase {
+class RecurlyInvoicesController extends RecurlyControllerBase {
 
   /**
    * Retreive all invoices for the specified entity.
@@ -33,7 +32,7 @@ class RecurlyInvoicesController extends ControllerBase {
    *   Returns a render array for a list of invoices.
    */
   public function invoicesList(RouteMatchInterface $route_match) {
-    $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity = $route_match->getParameter($entity_type_id);
     // Initialize the Recurly client with the site-wide settings.
     if (!recurly_client_initialize()) {
@@ -76,7 +75,7 @@ class RecurlyInvoicesController extends ControllerBase {
    *   Returns a render array for an invoice.
    */
   public function getInvoice(RouteMatchInterface $route_match, $invoice_number) {
-    $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity = $route_match->getParameter($entity_type_id);
     // Initialize the Recurly client with the site-wide settings.
     if (!recurly_client_initialize()) {
@@ -146,7 +145,7 @@ class RecurlyInvoicesController extends ControllerBase {
    *   A Recurly invoice UUID.
    */
   public function getInvoicePdf(RouteMatchInterface $route_match, $invoice_number) {
-    $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity = $route_match->getParameter($entity_type_id);
     // Initialize the Recurly client with the site-wide settings.
     if (!recurly_client_initialize()) {

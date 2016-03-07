@@ -7,52 +7,14 @@
 
 namespace Drupal\recurly\Form;
 
-use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\SafeMarkup;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\recurly\RecurlyFormatManager;
-use Drupal\recurly\RecurlyUrlManager;
+use Drupal\recurly\Form\RecurlyFormBase;
 
 /**
  * Recurly subscription plans form.
  */
-class RecurlySubscriptionPlansForm extends FormBase {
-
-  /**
-   * The formatting service.
-   *
-   * @var \Drupal\recurly\RecurlyFormatManager
-   */
-  protected $recurly_formatter;
-
-  /**
-   * The Recurly Url service.
-   *
-   * @var \Drupal\recurly\RecurlyUrlManager
-   */
-  protected $recurly_url_manager;
-
-  /**
-   * Constructs a \Drupal\recurly\Form\RecurlySubscriptionPlansForm object.
-   *
-   * @param \Drupal\recurly\RecurlyFormatManager $recurly_formatter
-   *   The Recurly formatter to be used for formatting.
-   */
-  public function __construct(RecurlyFormatManager $recurly_formatter, RecurlyUrlManager $recurly_url_manager) {
-    $this->recurly_formatter = $recurly_formatter;
-    $this->recurly_url_manager = $recurly_url_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('recurly.format_manager'),
-      $container->get('recurly.url_manager')
-    );
-  }
+class RecurlySubscriptionPlansForm extends RecurlyFormBase {
 
   /**
    * {@inheritdoc}
@@ -95,13 +57,13 @@ class RecurlySubscriptionPlansForm extends FormBase {
       foreach ($unit_amounts as $unit_amount) {
         $form['#plans'][$plan->plan_code]['unit_amounts'][$unit_amount->currencyCode] = $this->t('@unit_price every @interval_length @interval_unit',
           [
-            '@unit_price' => $this->recurly_formatter->formatCurrency($unit_amount->amount_in_cents, $unit_amount->currencyCode),
+            '@unit_price' => $this->recurlyFormatter->formatCurrency($unit_amount->amount_in_cents, $unit_amount->currencyCode),
             '@interval_length' => $plan->plan_interval_length,
             '@interval_unit' => $plan->plan_interval_unit,
           ]);
       }
       foreach ($setup_fees as $setup_fee) {
-        $form['#plans'][$plan->plan_code]['setup_amounts'][$unit_amount->currencyCode] = $this->recurly_formatter->formatCurrency($setup_fee->amount_in_cents, $setup_fee->currencyCode);
+        $form['#plans'][$plan->plan_code]['setup_amounts'][$unit_amount->currencyCode] = $this->recurlyFormatter->formatCurrency($setup_fee->amount_in_cents, $setup_fee->currencyCode);
       }
       $form['weights'][$plan->plan_code] = [
         '#type' => 'hidden',
@@ -129,7 +91,7 @@ class RecurlySubscriptionPlansForm extends FormBase {
       // Add an edit link if available for the current user.
       $operations['edit'] = [
         'title' => $this->t('edit'),
-        'url' => $this->recurly_url_manager->planEditUrl($details['plan']),
+        'url' => $this->recurlyUrlManager->planEditUrl($details['plan']),
       ];
 
       // Add a purchase link if Hosted Payment Pages are enabled.
@@ -182,7 +144,7 @@ class RecurlySubscriptionPlansForm extends FormBase {
       '#type' => 'tableselect',
       '#header' => $header,
       '#options' => $options,
-      '#empty' => $this->t('No subscription plans found. You can start by creating one in <a href=":url">your Recurly account</a>.', [':url' => \Drupal::config('recurly.settings')->get('recurly_subdomain') ? $this->recurly_url_manager->hostedUrl('plans')->getUri() : 'http://app.recurly.com']),
+      '#empty' => $this->t('No subscription plans found. You can start by creating one in <a href=":url">your Recurly account</a>.', [':url' => \Drupal::config('recurly.settings')->get('recurly_subdomain') ? $this->recurlyUrlManager->hostedUrl('plans')->getUri() : 'http://app.recurly.com']),
       '#js_select' => FALSE,
       '#default_value' => $existing_plans,
       '#multiple' => TRUE,

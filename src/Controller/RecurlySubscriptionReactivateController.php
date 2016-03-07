@@ -7,44 +7,15 @@
 
 namespace Drupal\recurly\Controller;
 
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\recurly\RecurlyFormatManager;
 
 /**
  * Recurly reactivate subscription controller.
  */
-class RecurlySubscriptionReactivateController extends ControllerBase {
-
-  /**
-   * The formatting service.
-   *
-   * @var \Drupal\recurly\RecurlyFormatManager
-   */
-  protected $recurly_formatter;
-
-  /**
-   * Constructs a \Drupal\recurly\Controller\RecurlySubscriptionReactivateController object.
-   *
-   * @param \Drupal\recurly\RecurlyFormatManager $recurly_formatter
-   *   The Recurly formatter to be used for formatting.
-   */
-  public function __construct(RecurlyFormatManager $recurly_formatter) {
-    $this->recurly_formatter = $recurly_formatter;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('recurly.format_manager')
-    );
-  }
+class RecurlySubscriptionReactivateController extends RecurlyControllerBase {
 
   /**
    * Reactivate the specified subscription.
@@ -55,7 +26,7 @@ class RecurlySubscriptionReactivateController extends ControllerBase {
    *   The UUID of the subscription to reactivate.
    */
   public function reactivateSubscription(RouteMatchInterface $route_match, $subscription_id = 'latest') {
-    $entity_type_id = \Drupal::config('recurly.settings')->get('recurly_entity_type') ?: 'user';
+    $entity_type_id = $this->recurlyConfig->entityType();
     $entity = $route_match->getParameter($entity_type_id);
     // Initialize the Recurly client with the site-wide settings.
     if (!recurly_client_initialize()) {
@@ -83,7 +54,7 @@ class RecurlySubscriptionReactivateController extends ControllerBase {
       $subscription->reactivate();
       drupal_set_message($this->t('Plan @plan reactivated! Normal billing will resume on @date.', [
         '@plan' => $subscription->plan->name,
-        '@date' => $this->recurly_formatter->formatDate($subscription->current_period_ends_at),
+        '@date' => $this->recurlyFormatter->formatDate($subscription->current_period_ends_at),
       ]));
     }
     catch (Recurly_Error $e) {

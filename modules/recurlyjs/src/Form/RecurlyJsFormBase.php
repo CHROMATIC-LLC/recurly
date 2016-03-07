@@ -9,11 +9,39 @@ namespace Drupal\recurlyjs\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\recurly\RecurlyConfigManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * RecurlyJS abstract class with common form elements to be shared.
  */
 abstract class RecurlyJsFormBase extends FormBase {
+
+  /**
+   * The config service.
+   *
+   * @var \Drupal\recurly\RecurlyConfigManager
+   */
+  protected $recurlyConfig;
+
+  /**
+   * Constructs a \Drupal\recurly\Controller\RecurlyControllerBase object.
+   *
+   * @param \Drupal\recurly\RecurlyConfigManager $recurly_config
+   *   Recurly configuration manager.
+   */
+  public function __construct(RecurlyConfigManager $recurly_config) {
+    $this->recurlyConfig = $recurly_config;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('recurly.config_manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
