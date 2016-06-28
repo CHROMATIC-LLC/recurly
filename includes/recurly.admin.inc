@@ -30,7 +30,7 @@ function recurly_settings_form($form, &$form_state) {
   $form['account']['recurly_public_key'] = array(
     '#type' => 'textfield',
     '#title' => t('Public Key'),
-    '#description' => t('Enter this if needed for Recurly.js. Note that this version of the Recurly module only supports Recurly.js v3, which uses the "public key" and not the "transparent post key" used by Recurly.js v2.'),
+    '#description' => t('Enter this if needed for Recurly.js. Note that this version of the Recurly module only supports Recurly.js v4, which uses the "public key" and not the "transparent post key" used by Recurly.js v2.'),
     '#default_value' => variable_get('recurly_public_key', ''),
   );
   $form['account']['recurly_subdomain'] = array(

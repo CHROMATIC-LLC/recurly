@@ -72,7 +72,23 @@ Drupal.recurly.recurlyJSFormError = function(err) {
  */
 Drupal.behaviors.recurlyJSConfigureForm = {
   attach: function (context, settings) {
-    recurly.configure(settings.public_key);
+    recurly.configure({
+      publicKey: settings.public_key,
+      style: {
+        number: {
+          placeholder: 'Credit Card Number'
+        },
+        month: {
+          placeholder: 'Month (mm)'
+        },
+        year: {
+          placeholder: 'Year (yy)'
+        },
+        cvv: {
+          placeholder: 'Security Code',
+        }
+      }
+    });
   }
 };
 
